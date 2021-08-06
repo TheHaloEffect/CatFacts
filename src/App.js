@@ -1,25 +1,44 @@
-import logo from './logo.svg';
+import React, { Component } from 'react';
+
+import { Card } from './components/fact-card';
+
 import './App.css';
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+class App extends Component {
+  constructor() {
+    super();
+
+    this.state = {
+        fact: '',
+        color: '#FFFFFF'
+    }
+  }
+
+  componentDidMount() {
+    fetch('https://catfact.ninja/fact')
+    .then(response => response.json())
+    .then(catFact => this.setState( { fact: catFact.fact } ));
+  }
+
+  getNextFact = () => {
+    fetch('https://catfact.ninja/fact')
+    .then(response => response.json())
+    .then(catFact => this.setState( { fact: catFact.fact } ));
+  }
+
+  render() {
+    return (
+      <div>
+        <h1> Cat Facts </h1>
+        <div className="button-div">
+          <button type="button" className="fact-btn" onClick={this.getNextFact}> New Fact </button>
+        </div>
+        <Card fact={this.state.fact} />
+      </div>
+    )
+  }
+
 }
 
 export default App;
+
